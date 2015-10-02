@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon id="repository.furiouspulsar" name="[COLOR red]Furious [/COLOR] Pulsar Repo" version="0.1.0" provider-name="FuriousMimi">
 	<extension point="xbmc.addon.repository" name="Furious Pulsar Repository">
-       <info>https://raw.githubusercontent.com/abuisine/pulsarfm/master/addons/addons.xml</info>
-       <checksum>https://raw.githubusercontent.com/abuisine/pulsarfm/master/addons/addons.xml.md5</checksum>
-       <datadir zip="true">https://raw.githubusercontent.com/abuisine/pulsarfm/master/addons</datadir>	
+       <info>https://raw.githubusercontent.com/abuisine/furiouspulsar/master/addons/addons.xml</info>
+       <checksum>https://raw.githubusercontent.com/abuisine/furiouspulsar/master/addons/addons.xml.md5</checksum>
+       <datadir zip="true">https://raw.githubusercontent.com/abuisine/furiouspulsar/master/addons</datadir>	
 	</extension>
 	<extension point="xbmc.addon.metadata">
 		<summary lang="en">Install Pulsar Providers</summary>
