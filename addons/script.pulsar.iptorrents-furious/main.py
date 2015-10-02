@@ -10,7 +10,7 @@ from pulsar import provider
 # Raw search
 # query is always a string
 def search(query):
-    # Will issue a GET call to http://foo.bar/search?q=query (properly urlencoded)
+	# Will issue a GET call to http://foo.bar/search?q=query (properly urlencoded)
     resp = provider.GET("http://foo.bar/search", params={
         "q": query,
     })
@@ -33,7 +33,7 @@ def search(query):
 #     "titles": null
 # }
 def search_episode(episode):
-    return search("%(title)s S%(season)02dE%(episode)02d" % episode)
+	return search("%(title)s S%(season)02dE%(episode)02d" % episode)
 
 
 # Movie Payload Sample
@@ -51,7 +51,14 @@ def search_episode(episode):
 #     }
 # }
 def search_movie(movie):
-    return search("%(title)s %(year)d" % movie)
+	resp = provider.GET("https://www.iptorrents.com/movies", params={
+		"q": movie.title,
+		"r0": '',
+		"r1": '',
+		"y0": '',
+		"y1": ''
+	})
+	return provider.extract_magnets(resp.data)
 
 
 # This registers your module for use
