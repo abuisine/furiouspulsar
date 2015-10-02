@@ -1,2 +1,5 @@
+v1.0.0
+* Confirmed to work
+
 v0.1.0
 * Bootstrap
