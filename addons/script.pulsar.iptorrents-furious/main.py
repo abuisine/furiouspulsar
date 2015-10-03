@@ -7,6 +7,8 @@
 from pulsar import provider
 
 
+settings = common.Settings()
+
 # Raw search
 # query is always a string
 def search(query):
@@ -51,8 +53,8 @@ def search_episode(episode):
 #     }
 # }
 def search_movie(movie):
-	resp = provider.GET("https://www.iptorrents.com/movies", params={
-		"q": movie.title,
+	resp = provider.GET("%(url)s/movies"%settings, params={
+		"q": movie['title'],
 		"r0": '',
 		"r1": '',
 		"y0": '',
@@ -63,3 +65,5 @@ def search_movie(movie):
 
 # This registers your module for use
 provider.register(search, search_movie, search_episode)
+
+del settings
