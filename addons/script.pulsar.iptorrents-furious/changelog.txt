@@ -1,3 +1,6 @@
+v0.0.4
+* Common library added
+
 v0.0.3
 * Settings added
 

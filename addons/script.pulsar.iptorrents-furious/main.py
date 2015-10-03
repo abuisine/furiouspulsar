@@ -5,7 +5,7 @@
 # You can read it at:
 # https://github.com/steeve/plugin.video.pulsar/blob/master/resources/site-packages/pulsar/provider.py
 from pulsar import provider
-
+import common
 
 settings = common.Settings()
 
