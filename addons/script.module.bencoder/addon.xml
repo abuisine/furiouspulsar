@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="script.module.bencoder"
+       name="bencoder"
+       version="1.0.0" 
+       provider-name="FuriousMimi">
+  <requires>
+    <import addon="xbmc.python" version="2.1.0"/>
+  </requires>
+  <extension point="xbmc.python.module"
+             library="lib" />
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <language></language>
+    <summary lang="en">The BitTorrent bencode module as light-weight, standalone package.</summary>
+    <description lang="en">This package simply re-packages the existing bencoding and bdecoding implemention from the ‘official’ BitTorrent client as a separate, leight-weight package for re-using them without having the entire BitTorrent software as a dependency.</description>
+    <disclaimer lang="en">Author: Thomas Rampelberg</disclaimer>
+    <license>BitTorrent Open Source License</license>
+    <website>https://pypi.python.org/pypi/bencode/</website>
+    <source>https://pypi.python.org/pypi/bencode/</source>
+  </extension>
+</addon>
