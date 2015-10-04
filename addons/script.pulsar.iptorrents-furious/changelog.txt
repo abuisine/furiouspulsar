@@ -1,8 +1,11 @@
+v0.1.0
+- Dependence on bencoder, Torrent list parsed ok for movies
+
 v0.0.4
-* Common library added
+- Common library added
 
 v0.0.3
-* Settings added
+- Settings added
 
 v0.0.1
-* Bootstrap
+- Bootstrap
