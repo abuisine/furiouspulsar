@@ -6,6 +6,7 @@
 # https://github.com/steeve/plugin.video.pulsar/blob/master/resources/site-packages/pulsar/provider.py
 from pulsar import provider, addon
 import re, bencode, hashlib, urllib
+import utils
 
 movie_regex = re.compile(r'<a class="t_title" [^>]+>(.*?)</a>.*?href="([^"]*\.torrent)".*?<td.*?<td class=ac>(.*?)</td>.*?<td class="ac t_seeders">(.*?)</td><td class="ac t_leechers">(.*?)</td>', re.MULTILINE)
 hash_regex = re.compile(r'/download\.php/([^/]+)/')
@@ -39,43 +40,61 @@ def parseTorrent(data):
 	}
 
 def extract_torrents(data):
-	results = [] 
+	results = []
+	count = 0
 	for torrent in movie_regex.findall(data):
+		if count >= provider.get_setting('max_magnets'):
+			break
+		count++
+		# provider.log.info('found: %s at %s'%(torrent[0], torrent[1]))
+		# url = "%s%s"%(provider.get_setting('url_address'), urllib.quote(torrent[1]))
+		# results.append({
+		# 	'name': torrent[0],
+		# 	'info_hash': hashlib.sha1(url).hexdigest(),
+		# 	'uri': provider.with_cookies(url),
+		# 	'seeds': int(torrent[3]),
+		# 	'peers': int(torrent[4]),
+		# 	'size': utils.human2bytes(torrent[2])
+		# })
 		provider.log.info('downloading %s'%torrent[1])
 		resp = provider.GET(
-			"%s%s"%(provider.ADDON.getSetting('url_address'), urllib.quote(torrent[1]))
+			"%s%s"%(provider.get_setting('url_address'), urllib.quote(torrent[1]))
 		)
 		if int(resp.code) == 200:
 			provider.log.info("torrent loaded")
 			parsed = parseTorrent(resp.data)
 			results.append({
 				"name": parsed['name'],
-				# "info_hash": parsed['info_hash'],
+				"info_hash": parsed['info_hash'],
 				"uri": parsed['magnet'],
 				"seeds": int(torrent[3]),
 				"peers": int(torrent[4])
+				# "size": utils.human2bytes(torrent[2])
 				# "trackers": parsed['trackers']
 			})
+
+
+	# print results
 	return results
 
 # Raw search
 # query is always a string
 def search(query):
 	provider.log.info("DEBUUUUG")
-	provider.log.info(provider.ADDON.getSetting('url_address'))
+	provider.log.info(provider.get_setting('url_address'))
 
-	url_search = "%s/t?q=%s"%(provider.ADDON.getSetting('url_address'), query)
+	url_search = "%s/t?q=%s"%(provider.get_setting('url_address'), query)
 	resp = provider.POST(
-		"%s/t"%provider.ADDON.getSetting('url_address'),
+		"%s/t"%provider.get_setting('url_address'),
 		{},
 		{},
 		"username=%s&password=%s"%(
-			provider.ADDON.getSetting('username'),
-			provider.ADDON.getSetting('password')
+			provider.get_setting('username'),
+			provider.get_setting('password')
 		)
 	)
 	resp = provider.GET(
-		"%s/t"%provider.ADDON.getSetting('url_address'),
+		"%s/t"%provider.get_setting('url_address'),
 		{'q': query},
 		{}
 	)

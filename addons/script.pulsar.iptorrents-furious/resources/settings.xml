@@ -5,6 +5,11 @@
 		<setting label="Username:" type="text" id="username" default=""/>
 		<setting label="Password:" type="text" id="password" option="hidden"  enable="!eq(-1,)" default=""/>
 	</category>
+	<category label="Pulsar integration">
+		<setting id="pulsar_integration" type="select" label="Select integration method" values="torrent|magnet" />
+		<setting label="Magnet works better but requires long timeout in pulsar configuration" type="lsep"/>
+		<setting label="Torrent does not seem to work" type="lsep"/>
+	</category>
 	<category label="Download Settings">
 		<setting label="Maximum Torrents to Send to Pulsar:" type="slider" id="max_magnets" default="10" range="0,1,20" option="int" />
 		<setting label="Limitation Size Movie Files" type="lsep"/>
