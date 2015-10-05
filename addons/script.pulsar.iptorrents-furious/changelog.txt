@@ -1,3 +1,6 @@
+v0.2.0
+- Movies working ! not quite stable
+
 v0.1.0
 - Dependence on bencoder, Torrent list parsed ok for movies
 

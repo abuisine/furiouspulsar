@@ -35,32 +35,38 @@ def parseTorrent(data):
 		'info_hash': sha1,
 		'name': decoded_info["name"],
 		'trackers': trackers,
-		'magnet': "magnet:?%s"%'?'.join(results)
+		'magnet': "magnet:?%s"%'&'.join(results)
 	}
 
 def extract_torrents(data):
 	results = [] 
 	for torrent in movie_regex.findall(data):
-		infohash = hash_regex.search(torrent[1]).group(1)
-		magnet = 'magnet:?xt=urn:btih:%s'%infohash
-		results.append({
-			"name": torrent[0].decode('utf-8'),
-			"info_hash": infohash.decode('utf-8'),
-			"uri": provider.with_cookies("%s%s"%(provider.ADDON.getSetting('url'), torrent[1])).decode('utf-8'),
-			# "uri": magnet.decode('utf-8'),
-			# "seeds": torrent[3],
-			# "peers": torrent[4]
-		})
+		provider.log.info('downloading %s'%torrent[1])
+		resp = provider.GET(
+			"%s%s"%(provider.ADDON.getSetting('url_address'), urllib.quote(torrent[1]))
+		)
+		if int(resp.code) == 200:
+			provider.log.info("torrent loaded")
+			parsed = parseTorrent(resp.data)
+			results.append({
+				"name": parsed['name'],
+				# "info_hash": parsed['info_hash'],
+				"uri": parsed['magnet'],
+				"seeds": int(torrent[3]),
+				"peers": int(torrent[4])
+				# "trackers": parsed['trackers']
+			})
 	return results
 
 # Raw search
 # query is always a string
 def search(query):
 	provider.log.info("DEBUUUUG")
+	provider.log.info(provider.ADDON.getSetting('url_address'))
 
-	url_search = "%s/t?q=%s"%(provider.ADDON.getSetting('url'), query)
+	url_search = "%s/t?q=%s"%(provider.ADDON.getSetting('url_address'), query)
 	resp = provider.POST(
-		"%s/t"%provider.ADDON.getSetting('url'),
+		"%s/t"%provider.ADDON.getSetting('url_address'),
 		{},
 		{},
 		"username=%s&password=%s"%(
@@ -69,7 +75,7 @@ def search(query):
 		)
 	)
 	resp = provider.GET(
-		"%s/t"%provider.ADDON.getSetting('url'),
+		"%s/t"%provider.ADDON.getSetting('url_address'),
 		{'q': query},
 		{}
 	)
