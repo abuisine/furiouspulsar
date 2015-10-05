@@ -1,5 +1,43 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addons>
+<addon id="plugin.video.pulsar" name="Pulsar" version="0.6.1" provider-name="steeve">
+    <requires>
+        <import addon="xbmc.python" version="2.1.0"/>
+    </requires>
+    <extension point="xbmc.python.pluginsource" library="navigation.py">
+        <provides>video</provides>
+    </extension>
+    <extension point="xbmc.service" library="service.py" start="startup"/>
+    <extension point="xbmc.python.module" library="resources/site-packages" />
+    <extension point="xbmc.subtitle.module" library="navigation.py" />
+    <extension point="xbmc.addon.metadata">
+        <platform>all</platform>
+        <language>en</language>
+        <website><![CDATA[https://github.com/steeve/plugin.video.pulsar]]></website>
+        <forum><![CDATA[http://forum.xbmc.org/showthread.php?tid=200957]]></forum>
+        <source><![CDATA[https://github.com/steeve/plugin.video.pulsar]]></source>
+        <language>en</language>
+        <license><![CDATA[Non commercial. See https://github.com/steeve/plugin.video.pulsar/blob/master/LICENSE]]></license>
+        <summary><![CDATA[Pulsar: Universal streaming]]></summary>
+        <description><![CDATA[Follow @pulsarhq on Twitter]]></description>
+    </extension>
+</addon>
+
+<addon id="repository.pulsarunofficial" name="Pulsar [COLOR red]Unofficial [/COLOR]Repo" version="2.0.0" provider-name="mancuniancol,iCanuck">
+	<extension point="xbmc.addon.repository" name="Pulsar Unofficial Repository">
+       <info>http://offshoregit.com/pulsarunofficial/raw/master/addons.xml</info>
+       <checksum>http://offshoregit.com/pulsarunofficial/raw/master/addons.xml.md5</checksum>
+       <datadir zip="true">http://offshoregit.com/pulsarunofficial/raw/master/</datadir>
+	</extension>
+	<extension point="xbmc.addon.metadata">
+		<summary>Install Pulsar and Providers</summary>
+		<description>Download and install Pulsar and Providers</description>
+		<disclaimer>The owners and submitters to this repository do not host or distribute any of the content displayed by these addons nor do they have any affiliation with the content providers.</disclaimer>
+		<platform>all</platform>
+		<license>GNU GENERAL PUBLIC LICENSE. Version 3, June 2007</license>
+	</extension>
+</addon>
+
 <addon id="script.module.bencoder" name="bencoder" version="1.0.0" provider-name="FuriousMimi">
 	<requires>
 		<import addon="xbmc.python" version="2.1.0"/>
