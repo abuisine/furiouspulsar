@@ -6,7 +6,7 @@
 		<setting label="Password:" type="text" id="password" option="hidden"  enable="!eq(-1,)" default=""/>
 	</category>
 	<category label="Pulsar integration">
-		<setting id="pulsar_integration" type="select" label="Select integration method" values="torrent|magnet" />
+		<setting id="pulsar_integration" type="labelenum" label="Select integration method" values="torrent|magnet" />
 		<setting label="Magnet works better but requires long timeout in pulsar configuration" type="lsep"/>
 		<setting label="Torrent does not seem to work" type="lsep"/>
 	</category>
@@ -18,5 +18,36 @@
 		<setting label="Limitation Size TV Files" type="lsep"/>
 		<setting label="Minimum Size in GB (0 = Filter OFF):" type="slider" id="TV_min_size" default="0" range="0,0.25,10" option="float" />
 		<setting label="Maximum Size in GB (10 = Filter OFF):" type="slider" id="TV_max_size" default="10" range="0,0.25,10" option="float" />
+	</category>
+	<category label="Movie filters">
+		<setting id="movie_tag_0" type="labelenum" label="3D #" values="N/A|87" />
+		<setting id="movie_tag_1" type="labelenum" label="480p #" values="N/A|77" />
+		<setting id="movie_tag_2" type="labelenum" label="BD-R #" values="N/A|89" />
+		<setting id="movie_tag_3" type="labelenum" label="BD-Rip #" values="N/A|90" />
+		<setting id="movie_tag_4" type="labelenum" label="Cam #" values="N/A|96" />
+		<setting id="movie_tag_5" type="labelenum" label="DVD-R #" values="6|N/A" />
+		<setting id="movie_tag_6" type="labelenum" label="HD/Bluray #" values="48|N/A" />
+		<setting id="movie_tag_7" type="labelenum" label="Kids #" values="N/A|54" />
+		<setting id="movie_tag_8" type="labelenum" label="MP4 #" values="62|N/A" />
+		<setting id="movie_tag_9" type="labelenum" label="Non-English #" values="N/A|38" />
+		<setting id="movie_tag_10" type="labelenum" label="Packs #" values="N/A|68" />
+		<setting id="movie_tag_11" type="labelenum" label="Web-DL #" values="N/A|20" />
+		<setting id="movie_tag_12" type="labelenum" label="Xvid #" values="7|N/A" />
+	</category>
+	<category label="TV filters">
+		<setting id="tv_tag_0" type="labelenum" label="Documentaries #" values="N/A|26" />
+		<setting id="tv_tag_1" type="labelenum" label="Sports #" values="N/A|55" />
+		<setting id="tv_tag_2" type="labelenum" label="480p #" values="N/A|78" />
+		<setting id="tv_tag_3" type="labelenum" label="BD #" values="N/A|23" />
+		<setting id="tv_tag_4" type="labelenum" label="DVD-R #" values="24|N/A" />
+		<setting id="tv_tag_5" type="labelenum" label="DVD-Rip #" values="N/A|25" />
+		<setting id="tv_tag_6" type="labelenum" label="MP4 #" values="66|N/A" />
+		<setting id="tv_tag_7" type="labelenum" label="Non-English #" values="N/A|82" />
+		<setting id="tv_tag_8" type="labelenum" label="Packs #" values="N/A|65" />
+		<setting id="tv_tag_9" type="labelenum" label="Packs/Non-English #" values="N/A|83" />
+		<setting id="tv_tag_10" type="labelenum" label="SD/x264 #" values="N/A|79" />
+		<setting id="tv_tag_11" type="labelenum" label="Web-DL #" values="22|N/A" />
+		<setting id="tv_tag_12" type="labelenum" label="x264 #" values="5|N/A" />
+		<setting id="tv_tag_13" type="labelenum" label="Xvid #" values="4|N/A" />
 	</category>
 </settings>

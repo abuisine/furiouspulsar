@@ -9,7 +9,6 @@ import re, bencode, hashlib, urllib
 import utils
 
 movie_regex = re.compile(r'<a class="t_title" [^>]+>(.*?)</a>.*?href="([^"]*\.torrent)".*?<td.*?<td class=ac>(.*?)</td>.*?<td class="ac t_seeders">(.*?)</td><td class="ac t_leechers">(.*?)</td>', re.MULTILINE)
-hash_regex = re.compile(r'/download\.php/([^/]+)/')
 
 def parseTorrent(data):
 	results = []
@@ -39,51 +38,56 @@ def parseTorrent(data):
 		'magnet': "magnet:?%s"%'&'.join(results)
 	}
 
-def extract_torrents(data):
+def extract_torrents(data, min_size, max_size):
 	results = []
 	count = 0
 	for torrent in movie_regex.findall(data):
-		if count >= provider.get_setting('max_magnets'):
+		if count >= int(provider.get_setting('max_magnets')):
+			provider.log.info('filtering: too many results')
 			break
-		count++
-		# provider.log.info('found: %s at %s'%(torrent[0], torrent[1]))
-		# url = "%s%s"%(provider.get_setting('url_address'), urllib.quote(torrent[1]))
-		# results.append({
-		# 	'name': torrent[0],
-		# 	'info_hash': hashlib.sha1(url).hexdigest(),
-		# 	'uri': provider.with_cookies(url),
-		# 	'seeds': int(torrent[3]),
-		# 	'peers': int(torrent[4]),
-		# 	'size': utils.human2bytes(torrent[2])
-		# })
-		provider.log.info('downloading %s'%torrent[1])
-		resp = provider.GET(
-			"%s%s"%(provider.get_setting('url_address'), urllib.quote(torrent[1]))
-		)
-		if int(resp.code) == 200:
-			provider.log.info("torrent loaded")
-			parsed = parseTorrent(resp.data)
+		size = utils.human2bytes(torrent[2])
+		if size < min_size or size > max_size:
+			provider.log.info('filtering (not in size range):%s %d<%d<%d'%(
+				torrent[0], min_size, size, max_size
+			))
+			continue
+		if provider.get_setting('pulsar_integration') == 'torrent':
+			provider.log.info('found: %s at %s'%(torrent[0], torrent[1]))
+			url = "%s%s"%(provider.get_setting('url_address'), urllib.quote(torrent[1]))
 			results.append({
-				"name": parsed['name'],
-				"info_hash": parsed['info_hash'],
-				"uri": parsed['magnet'],
-				"seeds": int(torrent[3]),
-				"peers": int(torrent[4])
-				# "size": utils.human2bytes(torrent[2])
-				# "trackers": parsed['trackers']
+				'name': torrent[0],
+				'info_hash': hashlib.sha1(url).hexdigest(),
+				'uri': provider.with_cookies(url),
+				'seeds': int(torrent[3]),
+				'peers': int(torrent[4]),
+				'size': size
 			})
-
+			count += 1
+		elif provider.get_setting('pulsar_integration') == 'magnet':
+			provider.log.info('downloading %s'%torrent[1])
+			resp = provider.GET(
+				"%s%s"%(provider.get_setting('url_address'), urllib.quote(torrent[1]))
+			)
+			if int(resp.code) == 200:
+				provider.log.info("torrent loaded")
+				parsed = parseTorrent(resp.data)
+				results.append({
+					"name": parsed['name'],
+					"info_hash": parsed['info_hash'],
+					"uri": parsed['magnet'],
+					"seeds": int(torrent[3]),
+					"peers": int(torrent[4])
+					# "size": utils.human2bytes(torrent[2])
+					# "trackers": parsed['trackers']
+				})
+				count += 1
 
 	# print results
 	return results
 
 # Raw search
 # query is always a string
-def search(query):
-	provider.log.info("DEBUUUUG")
-	provider.log.info(provider.get_setting('url_address'))
-
-	url_search = "%s/t?q=%s"%(provider.get_setting('url_address'), query)
+def search(query, tags=[], min_size=0, max_size=10*2**30):
 	resp = provider.POST(
 		"%s/t"%provider.get_setting('url_address'),
 		{},
@@ -93,15 +97,19 @@ def search(query):
 			provider.get_setting('password')
 		)
 	)
+	query_obj = {'q': query}
+	for tag in tags:
+		query_obj[tag] = ''
+
+	provider.log.info(query_obj)
 	resp = provider.GET(
 		"%s/t"%provider.get_setting('url_address'),
-		{'q': query},
+		query_obj,
 		{}
 	)
 	if int(resp.code) == 200:
-		provider.log.info(resp.msg)
-		et = extract_torrents(resp.data)
-		provider.log.info(et)
+		provider.log.info('Connected')
+		et = extract_torrents(resp.data, min_size, max_size)
 		provider.log.info('>>>>>> %d torrents sent to Pulsar<<<<<<<'%len(et))
 		return et
 	else:
@@ -109,6 +117,16 @@ def search(query):
 		provider.log.error(message)
 		provider.notify(message)
 		return
+
+def get_tags(header):
+	idx = 0
+	tags = []
+	while(provider.get_setting('%s%d'%(header, idx)) != ''):
+		tag = provider.get_setting('%s%d'%(header, idx))
+		if tag != 'N/A':
+			tags.append(tag)
+		idx += 1
+	return tags
 
 # Episode Payload Sample
 # {
@@ -120,8 +138,12 @@ def search(query):
 #     "titles": null
 # }
 def search_episode(episode):
-	return search("%(title)s S%(season)02dE%(episode)02d" % episode)
-
+	return search(
+		"%(imdb_id)s+S%(season)02dE%(episode)02d"%episode,
+		get_tags('tv_tag_'),
+		float(provider.get_setting('TV_min_size')) * 2**30,
+		float(provider.get_setting('TV_max_size')) * 2**30
+	)
 
 # Movie Payload Sample
 # Note that "titles" keys are countries, not languages
@@ -138,11 +160,15 @@ def search_episode(episode):
 #     }
 # }
 def search_movie(movie):
-	return search("%(imdb_id)s"%movie)
+	return search(
+		"%(imdb_id)s"%movie,
+		get_tags('movie_tag_'),
+		float(provider.get_setting('movie_min_size')) * 2**30,
+		float(provider.get_setting('movie_max_size')) * 2**30
+	)
 
 
 # This registers your module for use
 provider.register(search, search_movie, search_episode)
 
 del movie_regex
-del hash_regex

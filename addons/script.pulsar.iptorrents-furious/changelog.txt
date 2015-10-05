@@ -1,3 +1,7 @@
+v1.0.0
+- Fully functional, including filters
+- torrent integration mode still not working, prefer magnet and setup timeout accordingly !!!
+
 v0.3.0
 - Parsing more information
 - Dual method to give torrents to pulsar (only one seems to be robust)
