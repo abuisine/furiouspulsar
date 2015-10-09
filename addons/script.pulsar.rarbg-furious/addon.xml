@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="script.pulsar.rarbg-furious" name="Furious [COLOR darkviolet]RARBG[/COLOR] Pulsar Provider" version="0.1.0" provider-name="FuriousMimi">
+<addon id="script.pulsar.rarbg-furious" name="Furious [COLOR hotpink]RARBG[/COLOR] Pulsar Provider" version="1.0.0" provider-name="FuriousMimi">
     <requires>
-        <import addon="xbmc.python" version="2.12.0"/>
+        <import addon="xbmc.python" version="2.7.10"/>
         <import addon="plugin.video.pulsar" version="0.6.0"/>
     </requires>
     <extension point="xbmc.python.script" library="main.py">
@@ -9,6 +9,7 @@
     </extension>
     <extension point="xbmc.addon.metadata">
         <summary lang="en">Furious RARBG Pulsar Provider</summary>
+        <disclaimer>This addon does not work on OSX for now as python 2.6.5 on Mac is buggy for SSL connections</disclaimer>
         <language></language>
         <platform>all</platform>
     </extension>

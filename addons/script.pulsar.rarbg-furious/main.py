@@ -6,45 +6,57 @@
 # https://github.com/steeve/plugin.video.pulsar/blob/master/resources/site-packages/pulsar/provider.py
 from pulsar import provider
 
+app_id = 'script.pulsar.rarbg-furious'
+
 def get_token():
 	resp = provider.GET(provider.get_setting('url_address'),
-		{'get_token': 'get_token'}
+		{
+			'get_token': 'get_token',
+			'app_id': app_id
+		}
 	)
 	if int(resp.code) == 200:
-		provider.log.info(resp.json())
-
-# Raw search
-# query is always a string
-def search(query, tags=[], min_size=0, max_size=10*2**30):
-	resp = provider.POST(
-		"%s/t"%provider.get_setting('url_address'),
-		{},
-		{},
-		"username=%s&password=%s"%(
-			provider.get_setting('username'),
-			provider.get_setting('password')
-		)
-	)
-	query_obj = {'q': query}
-	for tag in tags:
-		query_obj[tag] = ''
-
-	provider.log.info(query_obj)
-	resp = provider.GET(
-		"%s/t"%provider.get_setting('url_address'),
-		query_obj,
-		{}
-	)
-	if int(resp.code) == 200:
-		provider.log.info('Connected')
-		et = extract_torrents(resp.data, min_size, max_size)
-		provider.log.info('>>>>>> %d torrents sent to Pulsar<<<<<<<'%len(et))
-		return et
+	  json = resp.json()
+	  provider.log.info('Got token: %s'%json['token'])
+	  return json['token']
 	else:
-		message = "request returning %d %s"%(resp.code, resp.msg)
-		provider.log.error(message)
-		provider.notify(message)
-		return
+	  provider.log.info('error')
+	  provider.log.info(resp.msg)
+	  provider.log.notify('Error getting token')
+	  return ''
+
+def convert_torrentapi2pulsar(response, min_size, max_size):
+	results = []
+	count = 0
+	if 'torrent_results' in response:
+		torrents = response['torrent_results']
+		for torrent in torrents:
+			size = torrent['size']
+			if size < min_size or size > max_size:
+				continue
+			count += 1
+			if count > int(provider.get_setting('max_magnets')):
+				break
+			results.append({
+				"name": torrent['title'],
+				"uri": torrent['download'],
+				# "info_hash": string
+				# "trackers": [string, ...]
+				"size": size,
+				"seeds": torrent['seeders'],
+				"peers": torrent['leechers']
+				# "resolution": int
+				# "video_codec": int
+				# "audio_codec": int
+				# "rip_type": int
+				# "scene_rating": int
+				# "language": string (ISO 639-1)
+			})
+		provider.log.info('%d result(s) sent'%len(results))
+		return results
+	else:
+		provider.log.info('Error: %d %s'%(response['error_code'], response['error']))
+		return results
 
 def get_tags(header):
 	idx = 0
@@ -66,13 +78,25 @@ def get_tags(header):
 #     "titles": null
 # }
 def search_episode(episode):
-	get_token()
-	# return search(
-	# 	"%(imdb_id)s+S%(season)02dE%(episode)02d"%episode,
-	# 	get_tags('tv_tag_'),
-	# 	float(provider.get_setting('TV_min_size')) * 2**30,
-	# 	float(provider.get_setting('TV_max_size')) * 2**30
-	# )
+	token = get_token()
+	if token != '':
+		resp = provider.GET(provider.get_setting('url_address'),
+			{
+				'token': token,
+				'app_id': app_id,
+				'mode': 'search',
+				'sort': 'seeders',
+				'format': 'json_extended',
+				'search_imdb': "%(imdb_id)s"%episode,
+				'search_string': "S%(season)02dE%(episode)02d"%episode
+			}
+		)
+		if int(resp.code) == 200:
+			return convert_torrentapi2pulsar(
+				resp.json(),
+				float(provider.get_setting('TV_min_size')) * 2**30,
+				float(provider.get_setting('TV_max_size')) * 2**30
+			)
 
 # Movie Payload Sample
 # Note that "titles" keys are countries, not languages
@@ -89,14 +113,26 @@ def search_episode(episode):
 #     }
 # }
 def search_movie(movie):
-	get_token()
-	# return search(
-	# 	"%(imdb_id)s"%movie,
-	# 	get_tags('movie_tag_'),
-	# 	float(provider.get_setting('movie_min_size')) * 2**30,
-	# 	float(provider.get_setting('movie_max_size')) * 2**30
-	# )
-
+	token = get_token()
+	if token != '':
+		resp = provider.GET(provider.get_setting('url_address'),
+			{
+				'token': token,
+				'app_id': app_id,
+				'mode': 'search',
+				'sort': 'seeders',
+				'format': 'json_extended',
+				'search_imdb': "%(imdb_id)s"%movie
+			}
+		)
+		if int(resp.code) == 200:
+			return convert_torrentapi2pulsar(
+				resp.json(),
+				float(provider.get_setting('movie_min_size')) * 2**30,
+				float(provider.get_setting('movie_max_size')) * 2**30
+			)
 
 # This registers your module for use
-provider.register(search, search_movie, search_episode)
+provider.register(None, search_movie, search_episode)
+
+del app_id
