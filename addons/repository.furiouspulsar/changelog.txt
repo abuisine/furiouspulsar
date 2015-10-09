@@ -1,0 +1,8 @@
+v1.1.0
+- New logo and color
+
+v1.0.0
+- Confirmed to work
+
+v0.1.0
+- Bootstrap

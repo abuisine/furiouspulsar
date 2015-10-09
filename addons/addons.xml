@@ -23,6 +23,26 @@
     </extension>
 </addon>
 
+<addon id="repository.furiouspulsar" name="[COLOR hotpink]Furious [/COLOR] Pulsar Repo" version="1.1.0" provider-name="FuriousMimi">
+	<extension point="xbmc.addon.repository" name="Furious Pulsar Repository">
+       <info>https://raw.githubusercontent.com/abuisine/furiouspulsar/master/addons/addons.xml</info>
+       <checksum>https://raw.githubusercontent.com/abuisine/furiouspulsar/master/addons/addons.xml.md5</checksum>
+       <datadir zip="true">https://raw.githubusercontent.com/abuisine/furiouspulsar/master/addons</datadir>
+	</extension>
+	<extension point="xbmc.addon.metadata">
+		<summary lang="en">Install Pulsar Providers</summary>
+		<description lang="en">Download and install Pulsar Providers</description>
+		<disclaimer lang="en">The owners and submitters to this repository do not host or distribute any of the content displayed by these addons nor do they have any affiliation with the content providers.</disclaimer>
+		<language></language>
+		<platform>all</platform>
+		<license>GNU GENERAL PUBLIC LICENSE. Version 3, June 2007</license>
+		<forum></forum>
+		<website></website>
+		<email></email>
+		<source></source>
+	</extension>
+</addon>
+
 <addon id="repository.pulsarunofficial" name="Pulsar [COLOR red]Unofficial [/COLOR]Repo" version="2.0.0" provider-name="mancuniancol,iCanuck">
 	<extension point="xbmc.addon.repository" name="Pulsar Unofficial Repository">
        <info>http://offshoregit.com/pulsarunofficial/raw/master/addons.xml</info>
