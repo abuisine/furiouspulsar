@@ -55,7 +55,7 @@
 	</extension>
 </addon>
 
-<addon id="script.pulsar.iptorrents-furious" name="Furious iptorrents Pulsar Provider" version="1.0.0" provider-name="FuriousMimi">
+<addon id="script.pulsar.iptorrents-furious" name="Furious [COLOR darkviolet]iptorrents[/COLOR] Pulsar Provider" version="1.0.0" provider-name="FuriousMimi">
     <requires>
         <import addon="xbmc.python" version="2.12.0"/>
         <import addon="plugin.video.pulsar" version="0.6.0"/>
@@ -66,6 +66,21 @@
     </extension>
     <extension point="xbmc.addon.metadata">
         <summary lang="en">Furious iptorrents Pulsar Provider</summary>
+        <language></language>
+        <platform>all</platform>
+    </extension>
+</addon>
+
+<addon id="script.pulsar.rarbg-furious" name="Furious [COLOR darkviolet]RARBG[/COLOR] Pulsar Provider" version="0.1.0" provider-name="FuriousMimi">
+    <requires>
+        <import addon="xbmc.python" version="2.12.0"/>
+        <import addon="plugin.video.pulsar" version="0.6.0"/>
+    </requires>
+    <extension point="xbmc.python.script" library="main.py">
+        <provides>executable</provides>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary lang="en">Furious RARBG Pulsar Provider</summary>
         <language></language>
         <platform>all</platform>
     </extension>
