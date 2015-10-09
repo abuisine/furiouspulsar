@@ -1,3 +1,6 @@
+v1.0.1
+- Typo and color
+
 v1.0.0
 - Fully functional, including filters
 - torrent integration mode still not working, prefer magnet and setup timeout accordingly !!!
