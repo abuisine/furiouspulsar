@@ -1,3 +1,6 @@
+v1.1.0
+- Settings changed to http rather than https as the server only accepts latest ssl ciphers which are not available on most kodi installs
+
 v1.0.0
 - Working properly except on Mac OS X because of an SSL bug in python 2.6.5 on OS X
 - Categories filtering not available for now

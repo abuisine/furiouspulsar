@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <settings>
 	<category label="General">
-		<setting label="URL address:" type="text" id="url_address" default="https://torrentapi.org/pubapi_v2.php"/>
+		<setting label="URL address:" type="text" id="url_address" default="http://torrentapi.org/pubapi_v2.php"/>
 	</category>
 	<category label="Download Settings">
 		<setting label="Maximum Torrents to Send to Pulsar:" type="slider" id="max_magnets" default="10" range="0,1,20" option="int" />
