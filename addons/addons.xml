@@ -75,7 +75,7 @@
 	</extension>
 </addon>
 
-<addon id="script.module.furious-utils" name="bencoder" version="1.0.0" provider-name="FuriousMimi">
+<addon id="script.module.furious-utils" name="[COLOR hotpink]Furious[/COLOR] utils" version="1.1.0" provider-name="FuriousMimi">
 	<requires>
 		<import addon="xbmc.python" version="2.1.0"/>
 	</requires>
@@ -92,7 +92,7 @@
 	</extension>
 </addon>
 
-<addon id="script.pulsar.iptorrents-furious" name="Furious [COLOR hotpink]iptorrents[/COLOR] Pulsar Provider" version="1.0.2" provider-name="FuriousMimi">
+<addon id="script.pulsar.iptorrents-furious" name="Furious [COLOR hotpink]iptorrents[/COLOR] Pulsar Provider" version="1.1.0" provider-name="FuriousMimi">
     <requires>
         <import addon="xbmc.python" version="2.12.0"/>
         <import addon="plugin.video.pulsar" version="0.6.0"/>
