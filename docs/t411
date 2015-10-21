@@ -1,0 +1,19 @@
+Le moteur de recherche utilise le système Sphinx.
+Par défaut, une recherche: 
+- ne se fait qu'au niveau du titre d'upload. 
+- affiche les résultats par pertinence. 
+- donnera tous les résultats contenant le ou les termes entrés (ex: house) que ce soit un mot entier (ex: house) ou partiel (ex: housewives). 
+- permet la saisie d'un unique caractère comme pour la série Américain V ou la série Français H. 
+
+Détail des options:
+- Nom: Recherche dans le titre de l'upload.
+- Description: Recherche dans la description de l'upload.
+- Fichier: Recherche dans les fichiers que partage le torrent. 
+- Propriétaire: Recherche dans les Uploaders (donc il s'agit d'entrer un pseudonyme).
+- Utiliser le caractère - recherche en écartant les résultats contenant le mot désigné. Exemple: Rechercher avec -xxx donnera des résultats sans aucune réponse comportant le terme xxx. 
+- Utiliser le caractère + recherche en obligeant les résultats contenant le mot désigné. Exemple: Rechercher avec +xxx donnera des résultats avec uniquement des réponses comportant le terme xxx.
+Utiliser le caractère & recherche avec la condition ET, soit l'un et l'autre. Exemple: Rechercher avec xxx  & yyy donnera des résultats avec uniquement des réponses comportant les termes xxx & yyy.
+Utiliser le caractère | recherche avec la condition OU, donc soit l'un, soit l'autre. Exemple: Rechercher avec xxx | yyy donnera des résultats avec uniquement des réponses comportant le terme xxx ou le terme yyy.
+Utiliser les guillemets recherche la phrase placée entre les guillemets, telle quelle. Rechercher avec "xxx yyy" donnera des résultats avec uniquement des réponses comportant les termes xxx yyy écrits tels quels. 
+En fonction de l'option xxx (yyy, etc.) peut représenter un titre ou un morceau du titre, un mot, un nom d'utilisateur, une catégorie existante, etc. 
+Ces termes peuvent être additionnés pour améliorer la précision de votre recherche.
