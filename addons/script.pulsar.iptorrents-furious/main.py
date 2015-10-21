@@ -64,12 +64,11 @@ def extract_torrents(data, min_size, max_size):
 			})
 			count += 1
 		elif provider.get_setting('pulsar_integration') == 'magnet':
-			provider.log.info('downloading %s'%torrent[1])
 			resp = provider.GET(
 				"%s%s"%(provider.get_setting('url_address'), urllib.quote(torrent[1]))
 			)
 			if int(resp.code) == 200:
-				provider.log.info("torrent loaded")
+				provider.log.info('downloaded %s'%torrent[1])
 				parsed = parseTorrent(resp.data)
 				results.append({
 					"name": parsed['name'],
@@ -112,7 +111,9 @@ def search(query, tags=[], min_size=0, max_size=10*2**30):
 		et = extract_torrents(resp.data, min_size, max_size)
 		provider.log.info('>>>>>> %d torrents sent to Pulsar<<<<<<<'%len(et))
 		provider.notify('%d torrents found'%len(et))
-		return et
+		res = furious.process_results(provider, et)
+		provider.log.info(res)
+		return res
 	else:
 		message = "request returning %d %s"%(resp.code, resp.msg)
 		provider.log.error(message)

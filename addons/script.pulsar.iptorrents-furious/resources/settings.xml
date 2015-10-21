@@ -2,11 +2,19 @@
 <settings>
 	<category label="General">
 		<setting label="URL address:" type="text" id="url_address" default="https://www.iptorrents.com"/>
+		<setting type="sep"/>
 		<setting label="Username:" type="text" id="username" default=""/>
 		<setting label="Password:" type="text" id="password" option="hidden"  enable="!eq(-1,)" default=""/>
-		<setting id="pulsar_integration" type="labelenum" label="Select integration method" values="torrent|magnet" />
+		<setting type="sep"/>
+		<setting id="pulsar_integration" type="labelenum" label="Pulsar integration method" values="torrent|magnet" />
 		<setting label="Magnet works better but requires long timeout in pulsar configuration" type="lsep"/>
 		<setting label="Torrent does not seem to work" type="lsep"/>
+	</category>
+	<category label="Result ranking">
+		<setting label="Pulsar ranking algorithm manipulation" type="lsep"/>
+		<setting label="Mode" id="ranking_mode" type="enum" values="Disabled|Upgrade|Downgrade" />
+		<setting label="Upgrade factor" type="number" id="upgrade_factor" default="100" />
+		<setting label="Downgrade factor" type="number" id="downgrade_factor" default="100" />
 	</category>
 	<category label="Filters">
 		<setting label="Maximum Torrents to Send to Pulsar:" type="slider" id="max_magnets" default="10" range="0,1,20" option="int" />
