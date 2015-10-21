@@ -1,3 +1,6 @@
+v1.2.1
+- Bug solved
+
 v1.2.0
 - Pulsar ranking overdrive
 

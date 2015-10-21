@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="script.pulsar.rarbg-furious" name="Furious [COLOR hotpink]RARBG[/COLOR] Pulsar Provider" version="1.2.0" provider-name="FuriousMimi">
+<addon id="script.pulsar.rarbg-furious" name="Furious [COLOR hotpink]RARBG[/COLOR] Pulsar Provider" version="1.2.1" provider-name="FuriousMimi">
     <requires>
         <import addon="xbmc.python" version="2.7.10"/>
         <import addon="plugin.video.pulsar" version="0.6.0"/>
