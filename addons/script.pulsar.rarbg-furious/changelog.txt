@@ -1,3 +1,6 @@
+v1.2.2
+- Release solved
+
 v1.2.1
 - Bug solved
 

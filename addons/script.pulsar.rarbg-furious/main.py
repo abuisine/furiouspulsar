@@ -94,7 +94,7 @@ def search_episode(episode):
 			}
 		)
 		if int(resp.code) == 200:
-			return furious.process_results(convert_torrentapi2pulsar(
+			return furious.process_results(provider, convert_torrentapi2pulsar(
 				resp.json(),
 				float(provider.get_setting('TV_min_size')) * 2**30,
 				float(provider.get_setting('TV_max_size')) * 2**30
@@ -128,7 +128,7 @@ def search_movie(movie):
 			}
 		)
 		if int(resp.code) == 200:
-			return furious.process_results(convert_torrentapi2pulsar(
+			return furious.process_results(provider, convert_torrentapi2pulsar(
 				resp.json(),
 				float(provider.get_setting('movie_min_size')) * 2**30,
 				float(provider.get_setting('movie_max_size')) * 2**30
