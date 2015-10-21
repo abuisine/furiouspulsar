@@ -2,7 +2,25 @@
 <settings>
 	<category label="General">
 		<setting label="URL address:" type="text" id="url_address" default="http://torrentapi.org/pubapi_v2.php"/>
+		<setting label="General filters" type="lsep"/>
+		<setting label="Minimum number of seeds:" type="slider" id="seeds_min" default="0" range="0,1,100" />
+		<setting label="Minimum number of peers:" type="slider" id="peers_min" default="0" range="0,1,100" />
 	</category>
+	<category label="Movie filters">
+		<setting id="movie_tag_0" type="labelenum" label="XVID #" values="N/A|14" />
+		<setting id="movie_tag_1" type="labelenum" label="XVID/720 #" values="48|N/A" />
+		<setting id="movie_tag_2" type="labelenum" label="x264 #" values="N/A|17" />
+		<setting id="movie_tag_3" type="labelenum" label="x264/1080 #" values="44|N/A" />
+		<setting id="movie_tag_4" type="labelenum" label="x264/720 #" values="45|N/A" />
+		<setting id="movie_tag_5" type="labelenum" label="x264/3D #" values="N/A|47" />
+		<setting id="movie_tag_6" type="labelenum" label="Full BD #" values="N/A|42" />
+		<setting id="movie_tag_7" type="labelenum" label="BD Remux #" values="N/A|46" />
+		<setting id="movie_tag_8" type="labelenum" label="XXX #" values="N/A|4" />
+	</category>
+	<category label="TV filters">
+		<setting id="tv_tag_0" type="labelenum" label="TV #" values="N/A|18" />
+		<setting id="tv_tag_1" type="labelenum" label="TV HD #" values="41|N/A" />
+	</category>	
 	<category label="Download Settings">
 		<setting label="Maximum Torrents to Send to Pulsar:" type="slider" id="max_magnets" default="10" range="0,1,20" option="int" />
 		<setting label="Limitation Size Movie Files" type="lsep"/>

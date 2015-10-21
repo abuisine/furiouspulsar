@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="script.pulsar.iptorrents-furious" name="Furious [COLOR hotpink]iptorrents[/COLOR] Pulsar Provider" version="1.0.1" provider-name="FuriousMimi">
+<addon id="script.pulsar.iptorrents-furious" name="Furious [COLOR hotpink]iptorrents[/COLOR] Pulsar Provider" version="1.0.2" provider-name="FuriousMimi">
     <requires>
         <import addon="xbmc.python" version="2.12.0"/>
         <import addon="plugin.video.pulsar" version="0.6.0"/>
+        <import addon="script.module.furious-utils" version="1.0.0"/>
         <import addon="script.module.bencoder" version="1.0.0"/>
     </requires>
     <extension point="xbmc.python.script" library="main.py">

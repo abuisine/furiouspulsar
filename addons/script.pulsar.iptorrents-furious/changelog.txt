@@ -1,3 +1,7 @@
+v1.0.2
+- Now depends on furious-utils
+- Settings layout reviewed
+
 v1.0.1
 - Typo and color
 

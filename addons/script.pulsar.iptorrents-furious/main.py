@@ -6,7 +6,7 @@
 # https://github.com/steeve/plugin.video.pulsar/blob/master/resources/site-packages/pulsar/provider.py
 from pulsar import provider, addon
 import re, bencode, hashlib, urllib
-import utils
+import furious
 
 movie_regex = re.compile(r'<a class="t_title" [^>]+>(.*?)</a>.*?href="([^"]*\.torrent)".*?<td.*?<td class=ac>(.*?)</td>.*?<td class="ac t_seeders">(.*?)</td><td class="ac t_leechers">(.*?)</td>', re.MULTILINE)
 
@@ -45,7 +45,7 @@ def extract_torrents(data, min_size, max_size):
 		if count >= int(provider.get_setting('max_magnets')):
 			provider.log.info('filtering: too many results')
 			break
-		size = utils.human2bytes(torrent[2])
+		size = furious.human2bytes(torrent[2])
 		if size < min_size or size > max_size:
 			provider.log.info('filtering (not in size range):%s %d<%d<%d'%(
 				torrent[0], min_size, size, max_size
@@ -77,7 +77,7 @@ def extract_torrents(data, min_size, max_size):
 					"uri": parsed['magnet'],
 					"seeds": int(torrent[3]),
 					"peers": int(torrent[4])
-					# "size": utils.human2bytes(torrent[2])
+					# "size": furious.human2bytes(torrent[2])
 					# "trackers": parsed['trackers']
 				})
 				count += 1
@@ -111,22 +111,13 @@ def search(query, tags=[], min_size=0, max_size=10*2**30):
 		provider.log.info('Connected')
 		et = extract_torrents(resp.data, min_size, max_size)
 		provider.log.info('>>>>>> %d torrents sent to Pulsar<<<<<<<'%len(et))
+		provider.notify('%d torrents found'%len(et))
 		return et
 	else:
 		message = "request returning %d %s"%(resp.code, resp.msg)
 		provider.log.error(message)
 		provider.notify(message)
 		return
-
-def get_tags(header):
-	idx = 0
-	tags = []
-	while(provider.get_setting('%s%d'%(header, idx)) != ''):
-		tag = provider.get_setting('%s%d'%(header, idx))
-		if tag != 'N/A':
-			tags.append(tag)
-		idx += 1
-	return tags
 
 # Episode Payload Sample
 # {
@@ -140,7 +131,7 @@ def get_tags(header):
 def search_episode(episode):
 	return search(
 		"%(imdb_id)s+S%(season)02dE%(episode)02d"%episode,
-		get_tags('tv_tag_'),
+		furious.get_tags(provider, 'tv_tag_'),
 		float(provider.get_setting('TV_min_size')) * 2**30,
 		float(provider.get_setting('TV_max_size')) * 2**30
 	)
@@ -162,7 +153,7 @@ def search_episode(episode):
 def search_movie(movie):
 	return search(
 		"%(imdb_id)s"%movie,
-		get_tags('movie_tag_'),
+		furious.get_tags(provider, 'movie_tag_'),
 		float(provider.get_setting('movie_min_size')) * 2**30,
 		float(provider.get_setting('movie_max_size')) * 2**30
 	)
