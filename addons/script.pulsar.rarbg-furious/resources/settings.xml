@@ -6,6 +6,21 @@
 		<setting label="Minimum number of seeds:" type="slider" id="seeds_min" default="0" range="0,1,100" />
 		<setting label="Minimum number of peers:" type="slider" id="peers_min" default="0" range="0,1,100" />
 	</category>
+	<category label="Result ranking">
+		<setting label="Pulsar ranking algorithm manipulation" type="lsep"/>
+		<setting label="Mode" id="ranking_mode" type="enum" values="Disabled|Upgrade|Downgrade" />
+		<setting label="Upgrade factor" type="number" id="upgrade_factor" default="100" />
+		<setting label="Downgrade factor" type="number" id="downgrade_factor" default="100" />
+	</category>
+	<category label="Filters">
+		<setting label="Maximum Torrents to Send to Pulsar:" type="slider" id="max_magnets" default="10" range="0,1,20" option="int" />
+		<setting label="Limitation Size Movie Files" type="lsep"/>
+		<setting label="Minimum Size in GB:" type="slider" id="movie_min_size" default="0" range="0,0.25,20" option="float" />
+		<setting label="Maximum Size in GB:" type="slider" id="movie_max_size" default="10" range="0,0.25,20" option="float" />
+		<setting label="Limitation Size TV Files" type="lsep"/>
+		<setting label="Minimum Size in GB:" type="slider" id="TV_min_size" default="0" range="0,0.25,10" option="float" />
+		<setting label="Maximum Size in GB:" type="slider" id="TV_max_size" default="10" range="0,0.25,10" option="float" />
+	</category>
 	<category label="Movie filters">
 		<setting id="movie_tag_0" type="labelenum" label="XVID #" values="N/A|14" />
 		<setting id="movie_tag_1" type="labelenum" label="XVID/720 #" values="48|N/A" />
@@ -21,13 +36,4 @@
 		<setting id="tv_tag_0" type="labelenum" label="TV #" values="N/A|18" />
 		<setting id="tv_tag_1" type="labelenum" label="TV HD #" values="41|N/A" />
 	</category>	
-	<category label="Download Settings">
-		<setting label="Maximum Torrents to Send to Pulsar:" type="slider" id="max_magnets" default="10" range="0,1,20" option="int" />
-		<setting label="Limitation Size Movie Files" type="lsep"/>
-		<setting label="Minimum Size in GB (0 = Filter OFF):" type="slider" id="movie_min_size" default="0" range="0,0.25,10" option="float" />
-		<setting label="Maximum Size in GB (10 = Filter OFF):" type="slider" id="movie_max_size" default="10" range="0,0.25,10" option="float" />
-		<setting label="Limitation Size TV Files" type="lsep"/>
-		<setting label="Minimum Size in GB (0 = Filter OFF):" type="slider" id="TV_min_size" default="0" range="0,0.25,10" option="float" />
-		<setting label="Maximum Size in GB (10 = Filter OFF):" type="slider" id="TV_max_size" default="10" range="0,0.25,10" option="float" />
-	</category>
 </settings>

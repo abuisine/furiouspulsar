@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="script.pulsar.rarbg-furious" name="Furious [COLOR hotpink]RARBG[/COLOR] Pulsar Provider" version="1.1.0" provider-name="FuriousMimi">
+<addon id="script.pulsar.rarbg-furious" name="Furious [COLOR hotpink]RARBG[/COLOR] Pulsar Provider" version="1.2.0" provider-name="FuriousMimi">
     <requires>
         <import addon="xbmc.python" version="2.7.10"/>
         <import addon="plugin.video.pulsar" version="0.6.0"/>
+        <import addon="script.module.furious-utils" version="1.1.0"/>
     </requires>
     <extension point="xbmc.python.script" library="main.py">
         <provides>executable</provides>
     </extension>
     <extension point="xbmc.addon.metadata">
         <summary lang="en">Furious RARBG Pulsar Provider</summary>
-        <disclaimer>This addon does not work on OSX for now as python 2.6.5 on Mac is buggy for SSL connections</disclaimer>
+        <disclaimer>Using HTTP API as HTTPS TLSv1.2 is not supported in current versions of kodi</disclaimer>
         <language></language>
         <platform>all</platform>
     </extension>

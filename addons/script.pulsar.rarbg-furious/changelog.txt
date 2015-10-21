@@ -1,3 +1,6 @@
+v1.2.0
+- Pulsar ranking overdrive
+
 v1.1.0
 - Settings changed to http rather than https as the server only accepts latest ssl ciphers which are not available on most kodi installs
 

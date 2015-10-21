@@ -5,6 +5,7 @@
 # You can read it at:
 # https://github.com/steeve/plugin.video.pulsar/blob/master/resources/site-packages/pulsar/provider.py
 from pulsar import provider
+import furious
 
 app_id = 'script.pulsar.rarbg-furious'
 
@@ -22,7 +23,7 @@ def get_token():
 	else:
 	  provider.log.info('error')
 	  provider.log.info(resp.msg)
-	  provider.log.notify('Error getting token')
+	  provider.notify('Error getting token')
 	  return ''
 
 def convert_torrentapi2pulsar(response, min_size, max_size):
@@ -53,6 +54,7 @@ def convert_torrentapi2pulsar(response, min_size, max_size):
 				# "language": string (ISO 639-1)
 			})
 		provider.log.info('%d result(s) sent'%len(results))
+		provider.notify('%d torrents found'%len(results))
 		return results
 	else:
 		provider.log.info('Error: %d %s'%(response['error_code'], response['error']))
@@ -92,11 +94,11 @@ def search_episode(episode):
 			}
 		)
 		if int(resp.code) == 200:
-			return convert_torrentapi2pulsar(
+			return furious.process_results(convert_torrentapi2pulsar(
 				resp.json(),
 				float(provider.get_setting('TV_min_size')) * 2**30,
 				float(provider.get_setting('TV_max_size')) * 2**30
-			)
+			))
 
 # Movie Payload Sample
 # Note that "titles" keys are countries, not languages
@@ -126,11 +128,11 @@ def search_movie(movie):
 			}
 		)
 		if int(resp.code) == 200:
-			return convert_torrentapi2pulsar(
+			return furious.process_results(convert_torrentapi2pulsar(
 				resp.json(),
 				float(provider.get_setting('movie_min_size')) * 2**30,
 				float(provider.get_setting('movie_max_size')) * 2**30
-			)
+			))
 
 # This registers your module for use
 provider.register(None, search_movie, search_episode)
