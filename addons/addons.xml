@@ -75,10 +75,28 @@
 	</extension>
 </addon>
 
-<addon id="script.pulsar.iptorrents-furious" name="Furious [COLOR hotpink]iptorrents[/COLOR] Pulsar Provider" version="1.0.1" provider-name="FuriousMimi">
+<addon id="script.module.furious-utils" name="bencoder" version="1.0.0" provider-name="FuriousMimi">
+	<requires>
+		<import addon="xbmc.python" version="2.1.0"/>
+	</requires>
+	<extension point="xbmc.python.module"
+						 library="lib" />
+	<extension point="xbmc.addon.metadata">
+		<platform>all</platform>
+		<language></language>
+		<summary lang="en">Enabling standard Furious providers functions.</summary>
+		<description lang="en"></description>
+		<disclaimer lang="en"></disclaimer>
+		<license></license>
+		<website></website>
+	</extension>
+</addon>
+
+<addon id="script.pulsar.iptorrents-furious" name="Furious [COLOR hotpink]iptorrents[/COLOR] Pulsar Provider" version="1.0.2" provider-name="FuriousMimi">
     <requires>
         <import addon="xbmc.python" version="2.12.0"/>
         <import addon="plugin.video.pulsar" version="0.6.0"/>
+        <import addon="script.module.furious-utils" version="1.0.0"/>
         <import addon="script.module.bencoder" version="1.0.0"/>
     </requires>
     <extension point="xbmc.python.script" library="main.py">
