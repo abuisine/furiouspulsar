@@ -1,3 +1,7 @@
+v2.0.0
+- Based on furious utils as object
+- Enables ranking
+
 v1.3.0
 - Movie and TV filters working
 

@@ -1,2 +1,5 @@
+v1.0.99
+- Still not working but based on furious utils as object
+
 v0.1.0
 - Bootstrap

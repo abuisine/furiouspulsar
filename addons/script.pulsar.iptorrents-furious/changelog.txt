@@ -1,3 +1,6 @@
+v2.0.0
+- Based on furious utils as object
+
 v1.1.0
 - Implement ranking algorithm
 

@@ -1,80 +1,136 @@
-import urllib, bencode
+import urllib, bencode, hashlib
 
 class FuriousProvider(object):
-    
-    define1 = 'truc'
 
-    def __init__(self, name):
-      self.name = name
+  define1 = 'truc'
 
-def parseTorrent(data):
-  results = []
-  decoded_torrent = bencode.bdecode(data)
-  decoded_info = decoded_torrent['info']
-  encoded_info = bencode.bencode(decoded_info)
-  sha1 = hashlib.sha1(encoded_info).hexdigest()
-  results.append("xt=urn:btih:"+sha1)
+  def __init__(self, name, provider):
+    self.name = name
+    self.provider = provider
+    self.authenticated = False
+    self.token = ""
+    self.authenticate()
 
-  if "name" in decoded_info:
-    results.append("dn="+urllib.quote(decoded_info["name"], safe=""))
+  def authenticate(self):
+    return
 
-  trackers = []
-  if "announce-list" in decoded_torrent:
-    for urllist in decoded_torrent["announce-list"]:
-      trackers += urllist
-  elif "announce" in decoded_torrent:
-    trackers.append(decoded_torrent["announce"])
+  def searchMovie(self, movie):
+    return []
 
-  for tracker in trackers:
-    results.append("tr=%s"%urllib.quote(tracker, safe=""))
+  def searchEpisode(self, episode):
+    return []
 
-  return {
-    'info_hash': sha1,
-    'name': decoded_info["name"],
-    'trackers': trackers,
-    'magnet': "magnet:?%s"%'&'.join(results)
-  }
+  def search(self, query):
+    return []  
 
-def process_results(provider, results):
-  mode = provider.get_setting('ranking_mode')
-  multiplier = 0
-  header = "[COLOR hotpink]F[/COLOR] "
-  if mode == "1":
-    header += "[COLOR lime]UP[/COLOR] "
-    multiplier = int(provider.get_setting('upgrade_factor'))
-    provider.log.info('Ranking upgrade')
-  elif mode == "2":
-    header += "[COLOR blue]DOWN[/COLOR] "
-    multiplier = 1.0 / int(provider.get_setting('downgrade_factor'))
-    provider.log.info('Ranking downgrade')
+  def filterPotentials(self, potentials):
+    min_size = float(self.provider.get_setting('movie_min_size')) * 2**30
+    max_size = float(self.provider.get_setting('movie_max_size')) * 2**30
+    results = []
+    count = 0
+    filtered = 0
+    for potential in potentials:
+      self.provider.log.info('testing torrent')
+      size = potential['size']
+      if size < min_size or size > max_size:
+        self.provider.log.info('filtered: %d < %d < %d'%(min_size, size, max_size))
+        filtered += 1
+        continue
+      count += 1
+      if count > int(self.provider.get_setting('max_magnets')):
+        self.provider.log.info('filtered: too many results')
+        filtered += 1
+        break
+      results.append(potential)
+    self.provider.log.info('Results: %d OK, %d filtered'%(len(results), filtered))
+    self.provider.notify('%d torrents found, [COLOR red]%d filtered[/COLOR]'%(len(results), filtered))
+    return results
 
-  for result in results:
-    seeds = result['seeds']
-    peers = result['peers']
-    text = ""
-    if multiplier != 0:
-      text = "S%dP%d "%(seeds, peers)
-      if 'seeds' in result:
-        result['seeds'] = (max(int(round(multiplier * seeds)), 1), 0)[seeds == 0]
-      if 'peers' in result:
-        result['peers'] = (max(int(round(multiplier * peers)), 1), 0)[peers == 0]
-    if 'name' in result:
-      result['name'] = header + text + result['name']
+  def rankResults(self, results):
+    mode = self.provider.get_setting('ranking_mode')
+    multiplier = 0
+    header = "[COLOR hotpink]F[/COLOR] "
+    if mode == "1":
+      header += "[COLOR lime]UP[/COLOR] "
+      multiplier = int(self.provider.get_setting('upgrade_factor'))
+      self.provider.log.info('Ranking upgrade')
+    elif mode == "2":
+      header += "[COLOR blue]DOWN[/COLOR] "
+      multiplier = 1.0 / int(self.provider.get_setting('downgrade_factor'))
+      self.provider.log.info('Ranking downgrade')
 
-  return results
+    for result in results:
+      seeds = result['seeds']
+      peers = result['peers']
+      text = ""
+      if multiplier != 0:
+        text = "S%dP%d "%(seeds, peers)
+        if 'seeds' in result:
+          result['seeds'] = (max(int(round(multiplier * seeds)), 1), 0)[seeds == 0]
+        if 'peers' in result:
+          result['peers'] = (max(int(round(multiplier * peers)), 1), 0)[peers == 0]
+      if 'name' in result:
+        result['name'] = header + text + result['name']
 
-def get_rank_multiplier(provider):
-  provider.get_setting('ranking_mode')
+    return results
 
-def get_tags(provider, header):
-  idx = 0
-  tags = []
-  while(provider.get_setting('%s%d'%(header, idx)) != ''):
-    tag = provider.get_setting('%s%d'%(header, idx))
-    if tag != 'N/A':
-      tags.append(tag)
-    idx += 1
-  return tags
+  def decodeRawTorrent(self, data):
+    results = []
+    decoded_torrent = bencode.bdecode(data)
+    decoded_info = decoded_torrent['info']
+    encoded_info = bencode.bencode(decoded_info)
+    sha1 = hashlib.sha1(encoded_info).hexdigest()
+    results.append("xt=urn:btih:"+sha1)
+
+    if "name" in decoded_info:
+      results.append("dn="+urllib.quote(decoded_info["name"], safe=""))
+
+    trackers = []
+    if "announce-list" in decoded_torrent:
+      for urllist in decoded_torrent["announce-list"]:
+        trackers += urllist
+    elif "announce" in decoded_torrent:
+      trackers.append(decoded_torrent["announce"])
+
+    for tracker in trackers:
+      results.append("tr=%s"%urllib.quote(tracker, safe=""))
+
+    self.provider.log.info('torrent decoded')
+    return {
+      'info_hash': sha1,
+      'name': decoded_info["name"],
+      'trackers': trackers,
+      'magnet': "magnet:?%s"%'&'.join(results)
+    }
+
+  def forceMagnets(self, results):
+    magnet_results = []
+    for result in results:
+      resp = self.provider.GET(result['uri'])
+      if int(resp.code) == 200:
+        self.provider.log.info('downloaded %s'%result['name'])
+        parsed = self.decodeRawTorrent(resp.data)
+        result["name"] = parsed['name']
+        result["info_hash"] = parsed['info_hash']
+        result["uri"] = parsed['magnet']
+        magnet_results.append(result)
+    return magnet_results
+
+  def getTvTags(self):
+    return self.__getTags('tv_tag_')
+
+  def getMovieTags(self):
+    return self.__getTags('movie_tag_')
+
+  def __getTags(self, header):
+    idx = 0
+    tags = []
+    while(self.provider.get_setting('%s%d'%(header, idx)) != ''):
+      tag = self.provider.get_setting('%s%d'%(header, idx))
+      if tag != 'N/A':
+        tags.append(tag)
+      idx += 1
+    return tags
 
 """
 Bytes-to-human / human-to-bytes converter.

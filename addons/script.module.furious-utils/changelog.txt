@@ -1,2 +1,5 @@
+v2.0.0
+- Object based with factorized code from various providers
+
 v1.1.99
 - Move to object oriented code
