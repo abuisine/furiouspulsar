@@ -81,6 +81,13 @@ def get_tags(header):
 # }
 def search_episode(episode):
 	token = get_token()
+	tags = furious.get_tags(provider, 'tv_tag_')
+	categories = ""
+	for tag in tags:
+		if categories == "":
+			categories = tag
+		else:
+			categories += ';%s'%tag
 	if token != '':
 		resp = provider.GET(provider.get_setting('url_address'),
 			{
@@ -90,7 +97,8 @@ def search_episode(episode):
 				'sort': 'seeders',
 				'format': 'json_extended',
 				'search_imdb': "%(imdb_id)s"%episode,
-				'search_string': "S%(season)02dE%(episode)02d"%episode
+				'search_string': "S%(season)02dE%(episode)02d"%episode,
+				'category': categories
 			}
 		)
 		if int(resp.code) == 200:
@@ -116,6 +124,13 @@ def search_episode(episode):
 # }
 def search_movie(movie):
 	token = get_token()
+	tags = furious.get_tags(provider, 'movie_tag_')
+	categories = ""
+	for tag in tags:
+		if categories == "":
+			categories = tag
+		else:
+			categories += ';%s'%tag
 	if token != '':
 		resp = provider.GET(provider.get_setting('url_address'),
 			{
@@ -124,7 +139,8 @@ def search_movie(movie):
 				'mode': 'search',
 				'sort': 'seeders',
 				'format': 'json_extended',
-				'search_imdb': "%(imdb_id)s"%movie
+				'search_imdb': "%(imdb_id)s"%movie,
+				'category': categories
 			}
 		)
 		if int(resp.code) == 200:

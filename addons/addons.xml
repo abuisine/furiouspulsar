@@ -109,7 +109,7 @@
     </extension>
 </addon>
 
-<addon id="script.pulsar.rarbg-furious" name="Furious [COLOR hotpink]RARBG[/COLOR] Pulsar Provider" version="1.2.2" provider-name="FuriousMimi">
+<addon id="script.pulsar.rarbg-furious" name="Furious [COLOR hotpink]RARBG[/COLOR] Pulsar Provider" version="1.3.0" provider-name="FuriousMimi">
     <requires>
         <import addon="xbmc.python" version="2.7.10"/>
         <import addon="plugin.video.pulsar" version="0.6.0"/>
