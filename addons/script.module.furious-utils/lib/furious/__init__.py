@@ -1,3 +1,40 @@
+import urllib, bencode
+
+class FuriousProvider(object):
+    
+    define1 = 'truc'
+
+    def __init__(self, name):
+      self.name = name
+
+def parseTorrent(data):
+  results = []
+  decoded_torrent = bencode.bdecode(data)
+  decoded_info = decoded_torrent['info']
+  encoded_info = bencode.bencode(decoded_info)
+  sha1 = hashlib.sha1(encoded_info).hexdigest()
+  results.append("xt=urn:btih:"+sha1)
+
+  if "name" in decoded_info:
+    results.append("dn="+urllib.quote(decoded_info["name"], safe=""))
+
+  trackers = []
+  if "announce-list" in decoded_torrent:
+    for urllist in decoded_torrent["announce-list"]:
+      trackers += urllist
+  elif "announce" in decoded_torrent:
+    trackers.append(decoded_torrent["announce"])
+
+  for tracker in trackers:
+    results.append("tr=%s"%urllib.quote(tracker, safe=""))
+
+  return {
+    'info_hash': sha1,
+    'name': decoded_info["name"],
+    'trackers': trackers,
+    'magnet': "magnet:?%s"%'&'.join(results)
+  }
+
 def process_results(provider, results):
   mode = provider.get_setting('ranking_mode')
   multiplier = 0
