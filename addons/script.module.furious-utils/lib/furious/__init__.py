@@ -103,10 +103,11 @@ class FuriousProvider(object):
       'magnet': "magnet:?%s"%'&'.join(results)
     }
 
-  def forceMagnets(self, results):
+  def forceMagnets(self, results, params={}, headers={}):
     magnet_results = []
     for result in results:
-      resp = self.provider.GET(result['uri'])
+      splitted = result['uri'].split('|')
+      resp = self.provider.GET(splitted[0], params, headers)
       if int(resp.code) == 200:
         self.provider.log.info('downloaded %s'%result['name'])
         parsed = self.decodeRawTorrent(resp.data)

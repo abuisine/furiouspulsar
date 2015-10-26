@@ -1,3 +1,6 @@
+v2.1.0
+- Headers passed to forceMagnets
+
 v2.0.0
 - Object based with factorized code from various providers
 
