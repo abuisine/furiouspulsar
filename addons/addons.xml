@@ -75,7 +75,7 @@
 	</extension>
 </addon>
 
-<addon id="script.module.furious-utils" name="[COLOR hotpink]Furious[/COLOR] utils" version="2.0.0" provider-name="FuriousMimi">
+<addon id="script.module.furious-utils" name="[COLOR hotpink]Furious[/COLOR] utils" version="2.1.0" provider-name="FuriousMimi">
 	<requires>
 		<import addon="xbmc.python" version="2.1.0"/>
         <import addon="script.module.bencoder" version="1.0.0"/>
@@ -126,18 +126,18 @@
     </extension>
 </addon>
 
-<addon id="script.pulsar.t411-furious" name="Furious [COLOR hotpink]t411[/COLOR] Pulsar Provider" version="1.0.99" provider-name="FuriousMimi">
+<addon id="script.pulsar.t411-furious" name="Furious [COLOR hotpink]t411[/COLOR] Pulsar Provider" version="2.0.0" provider-name="FuriousMimi">
     <requires>
         <import addon="xbmc.python" version="2.6.0"/>
         <import addon="plugin.video.pulsar" version="0.6.0"/>
-        <import addon="script.module.furious-utils" version="2.0.0"/>
+        <import addon="script.module.furious-utils" version="2.1.0"/>
     </requires>
     <extension point="xbmc.python.script" library="main.py">
         <provides>executable</provides>
     </extension>
     <extension point="xbmc.addon.metadata">
         <summary lang="en">Furious t411 Pulsar Provider</summary>
-        <disclaimer>Using HTTP API as HTTPS TLSv1.2 is not supported in current versions of kodi</disclaimer>
+        <disclaimer></disclaimer>
         <language></language>
         <platform>all</platform>
     </extension>

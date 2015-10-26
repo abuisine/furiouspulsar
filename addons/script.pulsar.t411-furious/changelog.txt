@@ -1,3 +1,6 @@
+v2.0.0
+- Working in magnets mode
+
 v1.0.99
 - Still not working but based on furious utils as object
 
