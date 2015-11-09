@@ -33,28 +33,31 @@ class rarbgFuriousProvider(furious.FuriousProvider):
 			return
 
 	def searchEpisode(self, episode):
-		return self.do({
-			'token': self.token,
-			'app_id': self.app_id,
-			'mode': 'search',
-			'sort': 'seeders',
-			'format': 'json_extended',
-			'search_imdb': "%(imdb_id)s"%episode,
-			'search_string': "S%(season)02dE%(episode)02d"%episode,
-			'category': self.tags2rarbgCategories(self.getTvTags())
-		})
-
+		return self.do(self.addCategories(
+			{
+				'token': self.token,
+				'app_id': self.app_id,
+				'mode': 'search',
+				'sort': 'seeders',
+				'format': 'json_extended',
+				'search_imdb': "%(imdb_id)s"%episode,
+				'search_string': "S%(season)02dE%(episode)02d"%episode
+			},
+			self.getTvTags()
+		))
 
 	def searchMovie(self, movie):
-		return self.do({
-			'token': self.token,
-			'app_id': self.app_id,
-			'mode': 'search',
-			'sort': 'seeders',
-			'format': 'json_extended',
-			'search_imdb': "%(imdb_id)s"%movie,
-			'category': self.tags2rarbgCategories(self.getMovieTags())
-		})
+		return self.do(self.addCategories(
+			{
+				'token': self.token,
+				'app_id': self.app_id,
+				'mode': 'search',
+				'sort': 'seeders',
+				'format': 'json_extended',
+				'search_imdb': "%(imdb_id)s"%movie
+			},
+			self.getMovieTags()
+		))
 
 	def do(self, query):
 		if not self.authenticated:
@@ -69,14 +72,16 @@ class rarbgFuriousProvider(furious.FuriousProvider):
 		else:
 			return []
 
-	def tags2rarbgCategories(self, tags):
+	def addCategories(self, params, tags):
 		categories = ""
 		for tag in tags:
 			if categories == "":
 				categories = tag
 			else:
 				categories += ';%s'%tag
-		return categories
+		if categories != "":
+			params['category'] = categories
+		return params
 
 	def parseJsonResults(self, json):
 		results = []
