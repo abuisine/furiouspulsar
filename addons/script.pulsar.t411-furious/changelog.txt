@@ -1,3 +1,6 @@
+v2.0.1
+- Wrong api url in default settings
+
 v2.0.0
 - Working in magnets mode
 
