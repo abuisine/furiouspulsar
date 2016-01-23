@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addons>
-<addon id="plugin.video.furiouspulsar" name="[COLOR hotpink]Furious[/COLOR] Pulsar Repo" version="0.1.0" provider-name="FuriousMimi">
+<addon id="plugin.video.furiouspulsar" name="[COLOR hotpink]Furious[/COLOR] Pulsar" version="0.1.0" provider-name="FuriousMimi">
 	<requires>
 		<import addon="xbmc.python" version="2.7.0"/>
 	</requires>
