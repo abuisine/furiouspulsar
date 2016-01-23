@@ -31,8 +31,11 @@ class FuriousProvider(object):
     filtered = 0
     for potential in potentials:
       self.provider.log.info('testing torrent')
-      size = potential['size']
-      if size < min_size or size > max_size:
+      if 'size' in potential:
+        size = potential['size']
+      else:
+        size = -1
+      if size >= 0 and (size < min_size or size > max_size):
         self.provider.log.info('filtered: %d < %d < %d'%(min_size, size, max_size))
         filtered += 1
         continue
@@ -60,8 +63,14 @@ class FuriousProvider(object):
       self.provider.log.info('Ranking downgrade')
 
     for result in results:
-      seeds = result['seeds']
-      peers = result['peers']
+      if 'seeds' in result:
+        seeds = result['seeds']
+      else:
+        seeds = 0
+      if 'peers' in result:
+        peers = result['peers']
+      else:
+        peers = 0
       text = ""
       if multiplier != 0:
         text = "S%dP%d "%(seeds, peers)
