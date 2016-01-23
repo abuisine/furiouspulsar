@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addons>
+<addon id="plugin.video.furiouspulsar" name="[COLOR hotpink]Furious[/COLOR] Pulsar Repo" version="0.1.0" provider-name="FuriousMimi">
+	<requires>
+		<import addon="xbmc.python" version="2.7.0"/>
+	</requires>
+	<extension point="xbmc.python.pluginsource" library="navigation.py">
+		<provides>video</provides>
+	</extension>
+	<extension point="xbmc.python.module" library="resources/site-packages" />
+	<extension point="xbmc.addon.metadata">
+		<summary>A Pulsar copy</summary>
+		<description>Based on Steeve's Pulsar</description>
+	</extension>
+</addon>
+
 <addon id="plugin.video.pulsar" name="Pulsar" version="0.6.1" provider-name="steeve">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>
